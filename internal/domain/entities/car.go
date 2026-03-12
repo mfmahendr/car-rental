@@ -1,7 +1,7 @@
 package entities
 
 type Car struct {
-	CarId     int
+	CarID     int
 	Name      string
 	Stock     uint
 	DailyRent int64
