@@ -111,7 +111,10 @@ var (
 )
 
 func parseDate(d string) time.Time {
-	format := "1/11/2011"
-	t, _ := time.Parse(format, d)
-	return t
+    format := "1/2/2006"
+    t, err := time.Parse(format, d)
+    if err != nil {
+        log.Printf("parseDate failed for input %q: %v", d, err)
+    }
+    return t
 }
