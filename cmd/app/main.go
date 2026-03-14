@@ -1,30 +1,37 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/mfmahendr/car-rental/internal/config"
+	"github.com/mfmahendr/car-rental/internal/delivery/http"
+	"github.com/mfmahendr/car-rental/internal/infra/database/postgres"
+	"github.com/mfmahendr/car-rental/internal/infra/validator"
+	"github.com/mfmahendr/car-rental/internal/setup"
 )
 
-var port = flag.Int("port", 8080, "Port to listen on")
-var address = flag.String("address", "localhost", "Address for the API to bind to")
-
 func main() {
-	flag.Parse()
-	app := fiber.New(fiber.Config{
-		AppName: "Car Rental App",
+	cfg := config.Load()
+
+	httpServer := fiber.New(fiber.Config{
+		AppName:      "Car Rental App",
+		ErrorHandler: http.ErrorHandler,
 		// Prefork: true,
 	})
+	validate := validator.NewValidator()
+	pool, err := postgres.NewPool(cfg.Db)
+	if err != nil {
+		log.Fatalf("failed to connect to database: %v", err)
+		return
+	}
+	appSetup := setup.NewApplication(*cfg, httpServer, pool, validate)
+	appSetup.Setup()
 
-	app.Get("/", func (c *fiber.Ctx) error {
-		return c.Status(fiber.StatusOK).SendString("OK")
-	})
-
-	addr := fmt.Sprintf("%s:%d", *address, *port)
+	addr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
 	log.Println("server starting on", addr)
-	if err := app.Listen(addr); err != nil {
-		log.Fatalf(err.Error())
+	if err := httpServer.Listen(addr); err != nil {
+		log.Fatalf("failed to start server: %v", err)
 	}
 }
