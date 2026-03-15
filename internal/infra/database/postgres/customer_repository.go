@@ -24,7 +24,7 @@ func NewCustomerRepository(db *pgxpool.Pool) *CustomerRepository {
 func (r *CustomerRepository) FindAll(ctx context.Context, page, limit *int) ([]entities.Customer, int64, error) {
 	offset := getOffsetAndChangePageLimit(page, limit)
 
-	queryString := "SELECT id, name, nik, phone_number, COUNT(*) OVER() AS total_count FROM customer ORDER BY id ASC LIMIT $1 OFFSET $2"
+	queryString := "SELECT id, name, nik, phone_number, COUNT(*) OVER() AS total_count FROM customers ORDER BY id ASC LIMIT $1 OFFSET $2"
 	rows, err := getDB(ctx, r.db).Query(ctx, queryString, *limit, offset)
 	if err != nil {
 		return nil, 0, fmt.Errorf("%s: %w", database.ErrDBOperation, err)
