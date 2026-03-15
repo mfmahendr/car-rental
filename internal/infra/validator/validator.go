@@ -5,5 +5,7 @@ import (
 )
 
 func NewValidator() *validator.Validate {
-	return validator.New()
+	v := validator.New()
+	Register(v)
+	return v
 }

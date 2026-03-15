@@ -1,13 +1,13 @@
 package input
 
 type CreateCustomerInput struct {
-	Name        string `validate:"required,min=3,regex=^[a-zA-Z ]+$"`
-	NIK         string `validate:"required,len=13,regex=^\\d+$"`
-	PhoneNumber string `validate:"required,regex=^(62|0)8\\d{8,10}$"`
+	Name        string `json:"name" validate:"required,min=3,carname"`
+	NIK         string `json:"nik" validate:"required,len=13,nik"`
+	PhoneNumber string `json:"phone_number" validate:"required,phone"`
 }
 
 type UpdateCustomerInput struct {
-	Name        string `validate:"omitempty,min=3,regex=^[a-zA-Z ]+$"`
-	NIK         string `validate:"omitempty,len=13,regex=^\\d+$"`
-	PhoneNumber string `validate:"omitempty,regex=^(62|0)8\\d{8,10}$"`
+	Name        string `json:"name" validate:"omitempty,min=3,carname"`
+	NIK         string `json:"nik" validate:"omitempty,len=13,nik"`
+	PhoneNumber string `json:"phone_number" validate:"omitempty,phone"`
 }

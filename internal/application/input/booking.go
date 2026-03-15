@@ -3,13 +3,13 @@ package input
 import "time"
 
 type CreateBookingInput struct {
-	CustomerID int       `validate:"required"`
-	CarID      int       `validate:"required"`
-	StartRent  time.Time `validate:"required,ltefield=EndRent"`
-	EndRent    time.Time `validate:"required,gtefield=StartRent"`
+	CustomerID int       `json:"customer_id" validate:"required"`
+	CarID      int       `json:"car_id" validate:"required"`
+	StartRent  time.Time `json:"start_rent" validate:"required,ltefield=EndRent"`
+	EndRent    time.Time `json:"end_rent" validate:"required,gtefield=StartRent"`
 }
 
 type UpdateBookingRentDateInput struct {
-	StartRent time.Time `validate:"omitempty,ltefield=EndRent"`
-	EndRent   time.Time `validate:"omitempty,gtefield=StartRent"`
+	StartRent time.Time `json:"start_rent" validate:"omitempty,ltefield=EndRent"`
+	EndRent   time.Time `json:"end_rent" validate:"omitempty,gtefield=StartRent"`
 }
