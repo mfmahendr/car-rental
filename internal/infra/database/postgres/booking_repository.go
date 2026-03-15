@@ -146,7 +146,7 @@ func (r *BookingRepository) Create(ctx context.Context, newBooking *entities.Boo
 	INSERT INTO bookings (customer_id, car_id, start_rent, end_rent, total_cost, finished)
 	VALUES ($1, $2, $3, $4, $5, $6)
 	RETURNING id`
-	err := getDB(ctx, r.db).QueryRow(ctx, q, newBooking.BookingID, newBooking.CustomerID, newBooking.CarID, newBooking.StartRent, newBooking.EndRent, newBooking.TotalCost, newBooking.Finished).Scan(&newBooking.CarID)
+	err := getDB(ctx, r.db).QueryRow(ctx, q, newBooking.CustomerID, newBooking.CarID, newBooking.StartRent, newBooking.EndRent, newBooking.TotalCost, newBooking.Finished).Scan(&newBooking.CarID)
 	if err != nil {
 		return fmt.Errorf("%s: %w", database.ErrDBOperation, err)
 	}
