@@ -12,3 +12,6 @@ migrate-create:
 
 migrate-force:
 	docker-compose run --rm migrate force $(version)
+
+seed:
+	go run ./cmd/seed/main.go
